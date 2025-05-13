@@ -1,0 +1,42 @@
+{% extends 'base/base.html' %}
+{% block title %}
+shops
+{% endblock title %}
+{% block content %}
+{% include 'base/navbar.html' %}
+<div class='container'>
+  <div class='row justify-content-center m-2 p-2'>
+    {% for shop in shops %}
+    <div class='col-sm-10 col-md-6 col-lg-4 mb-2'>        
+      <div class="card text-white bg-dark shadow rounded-4 p-3" >
+        <div class="card-body text-center">
+          <h4 class="card-title mb-4 fw-bold text-uppercase text-info">{{ shop.name|upper }}</h4>
+          <hr class="border-info opacity-50">
+
+          <div class="row text-center">
+            <div class="col-6 mb-3">
+              <h6 class="text-secondary">Registered Shops</h6>
+              <p class="fs-4 fw-semibold">{{ shop.machine_count }}</p>
+            </div>
+            <div class="col-6 mb-3">
+              <h6 class="text-secondary">Number of Sales</h6>
+              <p class="fs-4 fw-semibold">{{ shop.total_sales }}</p>
+            </div>
+            <div class="col-6">
+              <h6 class="text-secondary">Total Earned</h6>
+              <p class="fs-5 fw-bold text-success">Ksh. {{ shop.amount }}</p>
+            </div>
+            <div class="col-6">
+              <h6 class="text-secondary">Location</h6>
+              <p class="fs-5 fw-medium">{{ shop.location }}</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <button class="btn btn-outline-info w-100">Generate PDF Overview</button>
+          </div>
+        </div>
+      </div>
+    </div>       
+    {% endfor %}
+ </div> 
+{% endblock content %}

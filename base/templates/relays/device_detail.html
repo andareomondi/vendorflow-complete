@@ -1,0 +1,37 @@
+{% extends "base/base.html" %}
+
+{% block title %}{{ device.name }} - Details{% endblock title %}
+
+{% block content %}
+{% include "base/navbar.html" %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center text-light">Device Details - {{ device.name }} ({{ device.device_id }})</h2>
+
+    <div class="device-card p-4 bg-dark text-light">
+        <h4>Owner: {{ device.owner.username }}</h4>
+        <p>Created: {{ device.created_at|date:"Y-m-d H:i:s" }}</p>
+        <p>Status: <strong>{% if device.is_active %}Active{% else %}Inactive{% endif %}</strong></p>
+    </div>
+
+    <h3 class="mt-4 text-light">Relay Channels</h3>
+    <div class="row">
+        {% for channel in channels %}
+        <div class="col-md-3 mb-3">
+            <div class="card p-3 text-light bg-dark">
+                <h6>Channel {{ channel.channel_number }} ({{ channel.channel_type }})</h6>
+
+                <!-- Include the partial template for the toggle button -->
+                {% include "relays/channel_toggle.html" with channel=channel %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-warning">No channels found for this device.</p>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    setInterval(() => {
+        location.reload();  // ✅ Reloads the page every 10 seconds
+    }, 2000);
+</script>
+{% endblock content %}

@@ -1,0 +1,82 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}
+Home
+{% endblock title %}
+{% load crispy_forms_tags %}
+{% block content %}
+  {% include 'base/navbar.html' %}
+  {% for message in messages %}
+    <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+      <strong>Hey {{ request.user }}</strong> {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+  <div class='container'>
+    <div class='row justify-content-center p-2'>
+      <div class='col-sm-10 col-lg-6  mt-5'>
+        <div class='card p-3 rounded' url_path='{% url 'shops' %}' >
+          <div class='card-body'>
+            <div class='row justify-content-center'>
+              <div class='col-2 text-center'>
+                <img width="50" height="50" src="{% static 'images/shop.png' %}" alt="shop--v1"/>
+              </div>
+              <div class='col-8 text-center my-2'><p>{{ shops|length }} Shops Registered</p></div>
+            </div>
+              <div class='mt-4'>
+                <button class='btn btn-outline-success w-100' data-bs-toggle="modal" data-bs-target="#exampleModal">Add new shop</a>
+              </div>
+          </div>
+        </div>
+      </div>  
+      <div class='col-sm-10 col-lg-6 mt-5'>
+        <div class='card p-3 rounded' url_path='{% url 'relay-device-list' %}'>
+          <div class='card-body'>
+            <div class='row justify-content-center'>
+              <div class='col-2 text-center'>
+                <img width='50' height='50' src="{% static "images/relay.png" %}" alt='relay-image' />
+              </div>
+              <div class='col-8 text-center my-2'><p>{{ relay|length }} Relay machines registered</p></div>
+            </div>
+            <div class='mt-4'>
+              <a class='btn btn-outline-success w-100' href="{% url 'admin-dashboard' %}">Add new Machine</a>
+            </div>
+        </div>
+      </div>
+   </div> 
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Shop creation</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="post" action={% url 'home' %}>
+          {% csrf_token %}
+          {{ form|crispy }}
+          <div class="d-grid">
+            <button type="submit" class="btn btn-success">Create</button>
+          </div>
+        </form>
+    
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('.card').forEach(function(card) {
+              card.addEventListener('click', function(event) {
+                  // Check if the clicked element is the button or inside the button
+                  if (event.target.closest('.btn')) {
+                      return; // Do nothing if the button is clicked
+                  }
+                  window.location.href = card.getAttribute('url_path');
+              });
+          });
+      });
+  </script>
+{% endblock content %}

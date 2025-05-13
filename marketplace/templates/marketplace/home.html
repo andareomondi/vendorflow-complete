@@ -1,0 +1,63 @@
+{% extends 'base/base.html' %}
+{% block title %}
+Marketplace
+{% endblock title %}
+{% block content %}
+{% include 'base/navbar.html' %}
+<div class='container'>
+  <div class='row my-3'>
+      <div class="card">
+        <div class="card-body">
+
+          <div class="table-responsive ">
+            <table class="table text-center table-striped">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Serial number</th>
+                  <th>Type</th>
+                  <th>Price</th>
+                  <th>Tokens</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for machine in page_obj %}
+                <form method="post">
+                  {% csrf_token %}
+                  <tr>
+                    <td scope="row">{{machine.id}}</td>
+                    <td>{{machine.serial_number}}</td>
+                    <td>{{machine.machine_type}}</td>
+                    <td>{{ machine.price }}</div>
+                    <td>{{ machine.remaining_tokens }} </td>
+                    <td><a class="btn btn-outline-success" href="{% url 'machine_checkout' machine.id %}" name="button">Acquire</button></td>
+                  </tr>
+                </form>
+                {% endfor %}
+              </tbody>
+            </table>
+            <nav aria-label='Page Navigation'>
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class='page-item'><a href="?page={{ page_obj.previous_page_number }}" class='page-link'>Previous</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item disabled">
+                      <a class='page-link'>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                      </a>
+                    </span>
+
+                    {% if page_obj.has_next %}
+                    <li class='page-item'> <a class='page-link' href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    <li class='page-item'> <a class='page-link' href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+{% endblock content %}

@@ -1,0 +1,85 @@
+{% extends 'base/base.html' %}
+{% block title %}
+Marketplace
+{% endblock title %}
+{% block content %}
+{% include 'base/navbar.html' %}
+<div class='container'>
+  <div class='row my-3'>
+      <div class="card">
+        <div class="card-body">
+          <p class-"card-title">Registered User</p>
+
+          <div class="table-responsive">
+            <table class="table text-center">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone Number</th>
+                  <th>Date Joined</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in page_obj %}
+                <form method="post">
+                  {% csrf_token %}
+                  <tr>
+                    <td scope="row">{{user.id}}</td>
+                    <td>{{user.first_name}} {{user.second_name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>0{{ user.phone_number }}</div>
+                    <td>{{ user.created_on|date }} </td>
+                    <td>
+                      <div
+                      class="btn-group"
+                      role="group"
+                      aria-label="Button group with nested dropdown"
+                    >
+                      <div class="btn-group" role="group">
+                        <button
+                          type="button"
+                          class="btn btn-outline-primary btn-sm dropdown-toggle"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          More
+                        </button>
+                        <ul class="dropdown-menu" style="">
+                          <li><a class="dropdown-item" href="{% url 'user' user.id %}">View Profile </a></li>
+                          <li><a class="dropdown-item" href="#">Delete Account</a></li>
+                        </ul>
+                      </div>
+                    </div>                 
+                    </td>
+                 </form>
+                {% endfor %}
+              </tbody>
+            </table>
+            <nav aria-label='Page Navigation'>
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class='page-item'><a href="?page={{ page_obj.previous_page_number }}" class='page-link'>Previous</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item disabled">
+                      <a class='page-link'>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                      </a>
+                    </span>
+
+                    {% if page_obj.has_next %}
+                    <li class='page-item'> <a class='page-link' href="?page={{ page_obj.next_page_number }}">Next</a>
+                    </li>
+                    <li class='page-item'> <a class='page-link' href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+{% endblock content %}
+

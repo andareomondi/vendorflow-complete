@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+{% block title %}
+Machine Activation
+{% endblock title %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% include 'base/navbar.html' %}
+<div class="alert alert-success mt-2" role="alert">
+  Machine activation requests sent await approval and if succefull, a licence key will be sent to your email account.
+</div>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card border-3 border-tertiary shadow-lg" style="background-color: rgba(255, 255, 255, 0.1); width: 30rem;">
+    <div class="card-body">
+      <h1 class="card-title text-center">Machine Activation</h1>
+      <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="row justify-content-center">
+          <button type="submit" class="btn btn-success">Send activation request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+
+

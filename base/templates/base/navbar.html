@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-md bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}">VendorFlow</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto ">
+        <hr>
+        <li class="nav-item">
+          <a class="nav-link " aria-current="page" href="{% url 'home' %}">Home</a>
+        </li>
+        {% for link in nav_links %}
+          <li class="nav-item"><a href="{% url link.url_name %}" class='nav-link'>{{ link.name }}</a></li>
+        {% endfor %}
+      </ul>
+      <hr>
+      <form method='POST' action="{% url 'logout' %}" class='d-flex'>
+        {% csrf_token %}
+        <button class='btn btn-outline-success mt-1' type='submit'>Log out</button>
+        {% if request.user.is_superuser %}
+        <a href="{% url 'admin-dashboard' %}" class='btn btn-outline-danger mt-1 mx-3'>Admin</a>
+        {% else %}
+        <a href="{% url 'user' request.user.id %}" class='btn btn-outline-danger mt-1 mx-3'>Profile</a>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+</nav>
+

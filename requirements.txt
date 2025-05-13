@@ -1,0 +1,4 @@
+django
+paho-mqtt
+django-simpleui
+channels

@@ -1,0 +1,15 @@
+<form hx-post="{% url 'relay-channel-update' channel.id %}" hx-trigger="click" hx-refresh="true" >
+    {% csrf_token %}
+    <input type="hidden" name="state" value="{% if channel.state == 'ON' %}OFF{% else %}ON{% endif %}">
+
+    <button type="submit" class="btn  fw-bold w-100 rounded-pill d-flex align-items-center justify-content-center 
+        {% if channel.state == 'ON' %}btn-success{% else %}btn-danger{% endif %}">
+        <i class="bi {% if channel.state == 'ON' %}bi-toggle-on{% else %}bi-toggle-off{% endif %} me-2"></i>
+        {{ channel.state }}
+    </button>
+</form>
+<script>
+    document.body.addEventListener("htmx:afterRequest", function(event) {
+        window.location.reload();  // ✅ Reloads the page after an HTMX request
+    });
+</script>
