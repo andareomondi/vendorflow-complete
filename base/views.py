@@ -274,11 +274,11 @@ Views for generating each pdf report
 """
 def shop_pdf_generation(request, pk):
     owner = request.user
-    shop = Shop.objects.filter(id=pk)
-    print(shop)
+    shop = Shop.objects.get(id=pk)
     template = get_template('base/shop_overview.html')
     context = {
         'generation_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'owner': owner,
         'shop': shop,
     }
     html = template.render(context)
