@@ -67,7 +67,6 @@ class MQTTClient:
 
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
-            # print('connected')
             client.subscribe(self.vending_topic)
             client.subscribe(self.relay_topic)
             logger.info(f"Subscribed to: {self.vending_topic}, {self.relay_topic}")
@@ -83,7 +82,6 @@ class MQTTClient:
             if topic.startswith("vending/"):
                 self.process_vending_message(topic, payload)
             elif topic.startswith("relay/"):
-                print("thatis a bingo")
                 self.process_relay_message(topic, payload)
 
         except Exception as e:
@@ -152,21 +150,17 @@ class MQTTClient:
         """Handle relay device updates with channel validation"""
         try:
             data = json.loads(payload)
-            print(data)
             device_id = topic.split("/")[1]  # Extract from relay/{device_id}/status
 
             # Check device registration
             RelayDevice = apps.get_model("base", "RelayDevice")
             if not RelayDevice.objects.filter(device_id=device_id).exists():
-                print("doesnot exist")
                 logger.warning(f"Unregistered relay device: {device_id}")
                 return
-            print("exists")
 
             # Process each channel
             RelayChannel = apps.get_model("base", "RelayChannel")
             device = RelayDevice.objects.get(device_id=device_id)
-            print(device)
 
             for key, value in data.items():
                 if key.startswith(("IN_", "OUT_")):

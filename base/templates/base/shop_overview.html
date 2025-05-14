@@ -1,91 +1,199 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            padding: 20px;
-        }
-        .shop-container {
-            border: 1px solid #ddd;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-        .shop-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-        }
-        .shop-info {
-            font-size: 16px;
-            margin-top: 5px;
-        }
-        .machine-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        .machine-table th, .machine-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        .machine-table th {
-            background-color: #f4f4f4;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 14px;
-            color: #777;
-        }
-        .footer a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <h1>Shop Overview Report</h1>
-
-    <div class="shop-container">
-        <div class="shop-title">{{ shop.name }}</div>
-        <div class="shop-info">📍 Location: {{ shop.location }}</div>
-        <div class="shop-info">🛠 Registered Machines: {{ shop.machine_count }}</div>
-        <div class="shop-info">💰 Total Earned: Ksh. {{ shop.total_earned }}</div>
-        <div class="shop-info">📊 Number of Sales: {{ shop.sales_count }}</div>
-
-        {% if shop.related_shop.all %}
-        <h3>Registered Machines</h3>
-        <table class="machine-table">
-            <thead>
-                <tr>
-                    <th>Serial Number</th>
-                    <th>Type</th>
-                    <th>Remaining Tokens</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for machine in shop.related_shop.all %}
-                <tr>
-                    <td>{{ machine.serial_number }}</td>
-                    <td>{{ machine.machine_type }}</td>
-                    <td>{{ machine.remaining_tokens }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% endif %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vending Shop Overview</title>
+  </head>
+  <body
+    style="
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 12pt;
+      line-height: 1.3;
+      color: #333;
+    "
+  >
+    <div id="header_content" style="text-align: center">
+      <h1 style="color: #2c3e50; margin: 0">Vending Shop Overview</h1>
     </div>
 
-    <div class="footer">
-        Generated on {{ generation_date }} | <a href="{% url 'home' %}">Return to Homepage</a>
+    <div id="content">
+      <h2
+        style="
+          color: #34495e;
+          border-bottom: 2px solid #34495e;
+          padding-bottom: 5px;
+        "
+      >
+        Shop Information
+      </h2>
+      <table
+        style="width: 100%; border-collapse: collapse; margin-bottom: 20px"
+      >
+        <tr>
+          <td
+            style="
+              font-weight: bold;
+              padding: 5px;
+              border: 1px solid #bdc3c7;
+              width: 30%;
+            "
+          >
+            Name:
+          </td>
+          <td style="padding: 5px; border: 1px solid #bdc3c7">
+            {{ shop.name }}
+          </td>
+        </tr>
+        <tr>
+          <td
+            style="font-weight: bold; padding: 5px; border: 1px solid #bdc3c7"
+          >
+            Location:
+          </td>
+          <td style="padding: 5px; border: 1px solid #bdc3c7">
+            {{ shop.location }}
+          </td>
+        </tr>
+        <tr>
+          <td
+            style="font-weight: bold; padding: 5px; border: 1px solid #bdc3c7"
+          >
+            Amount Gained:
+          </td>
+          <td style="padding: 5px; border: 1px solid #bdc3c7">
+            Ksh. {{ shop.amount }}
+          </td>
+        </tr>
+        <tr>
+          <td
+            style="font-weight: bold; padding: 5px; border: 1px solid #bdc3c7"
+          >
+            Total Sales:
+          </td>
+          <td style="padding: 5px; border: 1px solid #bdc3c7">
+            {{ shop.total_sales }}
+          </td>
+        </tr>
+        <tr>
+          <td
+            style="font-weight: bold; padding: 5px; border: 1px solid #bdc3c7"
+          >
+            Owner:
+          </td>
+          <td style="padding: 5px; border: 1px solid #bdc3c7">
+            {{ shop.owner }}
+          </td>
+        </tr>
+      </table>
+
+      <h2
+        style="
+          color: #34495e;
+          border-bottom: 2px solid #34495e;
+          padding-bottom: 5px;
+        "
+      >
+        Machines Overview
+      </h2>
+      <table
+        style="width: 100%; border-collapse: collapse; margin-bottom: 20px"
+      >
+        <thead>
+          <tr style="background-color: #ecf0f1">
+            <th
+              style="
+                font-weight: bold;
+                padding: 8px;
+                border: 1px solid #bdc3c7;
+                text-align: left;
+              "
+            >
+              Serial Number
+            </th>
+            <th
+              style="
+                font-weight: bold;
+                padding: 8px;
+                border: 1px solid #bdc3c7;
+                text-align: left;
+              "
+            >
+              Machine Type
+            </th>
+            <th
+              style="
+                font-weight: bold;
+                padding: 8px;
+                border: 1px solid #bdc3c7;
+                text-align: left;
+              "
+            >
+              Days Active
+            </th>
+
+            <th
+              style="
+                font-weight: bold;
+                padding: 8px;
+                border: 1px solid #bdc3c7;
+                text-align: left;
+              "
+            >
+              Total Amount
+            </th>
+            <th
+              style="
+                font-weight: bold;
+                padding: 8px;
+                border: 1px solid #bdc3c7;
+                text-align: left;
+              "
+            >
+              Total Volume
+            </th>
+            <th
+              style="
+                font-weight: bold;
+                padding: 8px;
+                border: 1px solid #bdc3c7;
+                text-align: left;
+              "
+            >
+              Price
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for machine in machines %}
+          <tr>
+            <td style="padding: 8px; border: 1px solid #bdc3c7">
+              {{ machine.serial_number|truncatechars:9 }}
+            </td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7">
+              {{ machine.machine_type }}
+            </td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7">
+              {{ machine.days_used }}
+            </td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7">
+              {{ machine.total_amount }}
+            </td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7">
+              {{ machine.total_volume }}
+            </td>
+            <td style="padding: 8px; border: 1px solid #bdc3c7">
+              {{ machine.price }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+     <div
+      id="footer_content"
+      style="text-align: center; font-size: 10pt; color: #7f8c8d"
+    >
+      <p>Generated on {{ generation_date }}</p>
     </div>
-</body>
+  </body>
 </html>
