@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            padding: 20px;
+        }
+        .shop-container {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .shop-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        .shop-info {
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        .machine-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .machine-table th, .machine-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .machine-table th {
+            background-color: #f4f4f4;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #777;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Shop Overview Report</h1>
+
+    <div class="shop-container">
+        <div class="shop-title">{{ shop.name }}</div>
+        <div class="shop-info">📍 Location: {{ shop.location }}</div>
+        <div class="shop-info">🛠 Registered Machines: {{ shop.machine_count }}</div>
+        <div class="shop-info">💰 Total Earned: Ksh. {{ shop.total_earned }}</div>
+        <div class="shop-info">📊 Number of Sales: {{ shop.sales_count }}</div>
+
+        {% if shop.related_shop.all %}
+        <h3>Registered Machines</h3>
+        <table class="machine-table">
+            <thead>
+                <tr>
+                    <th>Serial Number</th>
+                    <th>Type</th>
+                    <th>Remaining Tokens</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for machine in shop.related_shop.all %}
+                <tr>
+                    <td>{{ machine.serial_number }}</td>
+                    <td>{{ machine.machine_type }}</td>
+                    <td>{{ machine.remaining_tokens }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        Generated on {{ generation_date }} | <a href="{% url 'home' %}">Return to Homepage</a>
+    </div>
+</body>
+</html>

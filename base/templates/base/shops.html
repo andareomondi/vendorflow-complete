@@ -15,7 +15,7 @@ shops
 
           <div class="row text-center">
             <div class="col-6 mb-3">
-              <h6 class="text-secondary">Registered Shops</h6>
+              <h6 class="text-secondary">Registered Machines</h6>
               <p class="fs-4 fw-semibold">{{ shop.machine_count }}</p>
             </div>
             <div class="col-6 mb-3">
@@ -32,7 +32,7 @@ shops
             </div>
           </div>
           <div class="mt-4">
-            <button class="btn btn-outline-info w-100">Generate PDF Overview</button>
+            <a href="{% url 'shop-pdf' shop.id %}" class="btn btn-outline-info w-100">Generate PDF Overview</a>
           </div>
         </div>
       </div>

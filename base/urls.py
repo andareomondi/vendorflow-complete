@@ -21,4 +21,5 @@ urlpatterns = [
     path(
         "user/machines/<int:pk>/", Specific_Machine.as_view(), name="specific_machine"
     ),
+    path("user/shops/pdf/<int:pk>/", shop_pdf_generation, name="shop-pdf"),
 ]

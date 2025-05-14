@@ -1,3 +1,4 @@
+from tempfile import template
 from django.shortcuts import render, redirect, get_object_or_404
 import json
 from django.views import View
@@ -9,6 +10,10 @@ from .models import *
 from django.db.models import Count
 from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
+import paho.mqtt.client as mqtt
+from xhtml2pdf import pisa
+from io import BytesIO
+from django.template.loader import render_to_string, get_template
 
 # Create your views here.
 class Home(LoginRequiredMixin, View):
@@ -39,6 +44,7 @@ class Home(LoginRequiredMixin, View):
         return render(request, 'base/home.html', {'form': form})
 def home(request):
     return redirect('home')
+
 class ClientRegistration(View):
     def get(self, request):
        form = RegisterForm
@@ -140,26 +146,6 @@ class RelayDeviceDetailView(LoginRequiredMixin, View):
             'device': device,
             'channels': channels
         })
-#
-# class RelayChannelUpdateView(LoginRequiredMixin, View):
-#     def post(self, request, pk):
-#         channel = get_object_or_404(RelayChannel, pk=pk, device__owner=request.user)
-#         new_state = request.POST.get('state')
-#         if new_state in ['ON', 'OFF']:
-#             channel.state = new_state
-#             channel.save()
-#
-#             # Send MQTT command
-#             self.send_mqtt_command(channel, new_state)
-#             return render(request, "relays/channel_toggle.html", {"channel": channel})
-#
-#         return HttpResponse(status=400)
-#
-import json
-import paho.mqtt.client as mqtt
-from django.shortcuts import get_object_or_404, render
-from django.http import HttpResponse
-from .models import RelayChannel
 
 class RelayChannelUpdateView(LoginRequiredMixin, View):
     def post(self, request, pk):
@@ -282,3 +268,25 @@ class Specific_Machine(LoginRequiredMixin, View):
     refill.save()
     messages.success(request, 'Refill request submitted successfully. Please wait for approval')
     return redirect('specific_machine', pk=pk)
+
+"""
+Views for generating each pdf report
+"""
+def shop_pdf_generation(request, pk):
+    owner = request.user
+    shop = Shop.objects.filter(id=pk)
+    print(shop)
+    template = get_template('base/shop_overview.html')
+    context = {
+        'generation_date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'shop': shop,
+    }
+    html = template.render(context)
+
+    # Create a PDF
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+
+    if not pdf.err:
+        return HttpResponse(result.getvalue(), content_type='application/pdf')
+    return HttpResponse('Error Rendering PDF', status=400)

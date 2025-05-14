@@ -8,7 +8,7 @@
     <h2 class="mb-4 text-center text-light">Device Details - {{ device.name }} ({{ device.device_id }})</h2>
 
     <div class="device-card p-4 bg-dark text-light">
-        <h4>Owner: {{ device.owner.username }}</h4>
+        <h4>Owner: {{ device.owner }}</h4>
         <p>Created: {{ device.created_at|date:"Y-m-d H:i:s" }}</p>
         <p>Status: <strong>{% if device.is_active %}Active{% else %}Inactive{% endif %}</strong></p>
     </div>
@@ -31,7 +31,7 @@
 </div>
 <script>
     setInterval(() => {
-        location.reload();  // ✅ Reloads the page every 10 seconds
-    }, 2000);
+        location.reload();  // ✅ Reloads the page every 3 seconds
+    }, 3000);
 </script>
 {% endblock content %}
